@@ -89,6 +89,70 @@
   /* TOAST */
   .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#c8e06a;color:#0f1923;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:10px 22px;border-radius:22px;box-shadow:0 4px 24px rgba(0,0,0,0.5);z-index:999;pointer-events:none;opacity:0;transition:opacity 0.3s;}
   .toast.show{opacity:1;}
+
+  /* SUIVI */
+  .suivi-content{padding:14px 14px 80px;max-width:520px;margin:0 auto;width:100%;}
+  .suivi-section{margin-bottom:18px;}
+  .suivi-section-title{font-family:'Playfair Display',serif;font-size:15px;color:#c8e06a;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid rgba(200,224,106,0.1);}
+
+  .objectif-card{background:rgba(200,224,106,0.06);border:1px solid rgba(200,224,106,0.18);border-radius:13px;padding:14px;}
+  .objectif-row{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
+  .objectif-label{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(200,224,106,0.6);flex:1;}
+  .objectif-input{background:rgba(255,255,255,0.06);border:1px solid rgba(200,224,106,0.25);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:14px;color:#e8e0d0;width:90px;text-align:center;outline:none;}
+  .objectif-input:focus{border-color:rgba(200,224,106,0.6);}
+  .objectif-unit{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(232,224,208,0.4);}
+
+  .pesee-form{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:14px;}
+  .pesee-row{display:flex;gap:10px;align-items:center;}
+  .pesee-input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(200,224,106,0.25);border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:22px;font-weight:600;color:#c8e06a;text-align:center;outline:none;}
+  .pesee-input:focus{border-color:rgba(200,224,106,0.6);}
+  .pesee-input::placeholder{color:rgba(200,224,106,0.2);font-size:16px;}
+  .pesee-btn{background:#c8e06a;border:none;border-radius:10px;padding:11px 18px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#0f1923;cursor:pointer;white-space:nowrap;}
+  .pesee-hint{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(232,224,208,0.25);margin-top:8px;text-align:center;}
+
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;padding:12px;text-align:center;}
+  .stat-card.highlight{background:rgba(200,224,106,0.08);border-color:rgba(200,224,106,0.2);}
+  .stat-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#c8e06a;}
+  .stat-val.neg{color:#e06a6a;}
+  .stat-val.pos{color:#6ae0a0;}
+  .stat-lbl{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(232,224,208,0.35);margin-top:3px;text-transform:uppercase;letter-spacing:0.8px;}
+  .stat-sub{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(232,224,208,0.4);margin-top:2px;}
+
+  .progress-wrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;padding:14px;margin-top:10px;}
+  .progress-bar-bg{background:rgba(255,255,255,0.07);border-radius:10px;height:10px;overflow:hidden;margin:8px 0 5px;}
+  .progress-bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#c8e06a,#6ae0a0);transition:width 0.5s ease;}
+  .progress-labels{display:flex;justify-content:space-between;font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(232,224,208,0.3);}
+  .progress-pct{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(200,224,106,0.7);text-align:center;margin-top:2px;}
+
+  .chart-wrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;padding:14px;margin-top:10px;}
+  .chart-area{height:100px;position:relative;margin:8px 0 4px;}
+  .chart-svg{width:100%;height:100%;}
+  .chart-empty{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(232,224,208,0.25);text-align:center;padding:30px 0;}
+
+  .history-list{margin-top:2px;}
+  .hist-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+  .hist-row:last-child{border-bottom:none;}
+  .hist-date{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(232,224,208,0.45);}
+  .hist-weight{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:#e8e0d0;}
+  .hist-delta{font-family:'DM Sans',sans-serif;font-size:11px;padding:2px 8px;border-radius:20px;}
+  .hist-delta.neg{background:rgba(110,224,160,0.1);color:#6ae0a0;}
+  .hist-delta.pos{background:rgba(224,106,106,0.1);color:#e06a6a;}
+  .hist-delta.neu{background:rgba(232,224,208,0.06);color:rgba(232,224,208,0.3);}
+  .hist-del{background:none;border:none;color:rgba(232,224,208,0.2);font-size:14px;cursor:pointer;padding:2px 6px;}
+  .no-history{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(232,224,208,0.25);text-align:center;padding:18px 0;}
+
+  .bilan-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+  .bilan-icon{font-size:22px;width:36px;text-align:center;flex-shrink:0;}
+  .bilan-text{flex:1;}
+  .bilan-title{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#e8e0d0;}
+  .bilan-sub{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(232,224,208,0.4);margin-top:2px;}
+  .bilan-tag{font-family:'DM Sans',sans-serif;font-size:11px;padding:2px 9px;border-radius:20px;flex-shrink:0;}
+  .bilan-tag.green{background:rgba(110,224,160,0.12);color:#6ae0a0;border:1px solid rgba(110,224,160,0.2);}
+  .bilan-tag.yellow{background:rgba(200,224,106,0.12);color:#c8e06a;border:1px solid rgba(200,224,106,0.2);}
+  .bilan-tag.red{background:rgba(224,106,106,0.1);color:#e06a6a;border:1px solid rgba(224,106,106,0.15);}
+
+  .clear-hist-btn{width:100%;background:rgba(255,100,100,0.05);border:1px solid rgba(255,100,100,0.12);border-radius:10px;padding:9px;font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,150,150,0.5);cursor:pointer;margin-top:10px;}
 </style>
 </head>
 <body>
@@ -99,6 +163,7 @@
     <div class="tabs">
       <button class="tab-btn active" id="tab-plan" onclick="switchTab('plan')">📅 Mon Plan</button>
       <button class="tab-btn" id="tab-courses" onclick="switchTab('courses')">🛒 Courses</button>
+      <button class="tab-btn" id="tab-suivi" onclick="switchTab('suivi')">⚖️ Suivi</button>
     </div>
   </div>
 
@@ -109,6 +174,10 @@
 
   <div id="courses-view" style="display:none;flex:1;overflow:hidden;">
     <div class="scroll-area"><div class="shop-content" id="shop-content"></div></div>
+  </div>
+
+  <div id="suivi-view" style="display:none;flex:1;overflow:hidden;">
+    <div class="scroll-area"><div class="suivi-content" id="suivi-content"></div></div>
   </div>
 </div>
 
@@ -212,10 +281,25 @@ let state = {
   days: JSON.parse(JSON.stringify(DAYS_INIT)),
   swapping: null, // {dayIdx, slotIdx}
   checked: JSON.parse(localStorage.getItem("shop_checked")||"{}"),
+  poids: JSON.parse(localStorage.getItem("suivi_poids")||"[]"), // [{date, kg}]
+  objectif: JSON.parse(localStorage.getItem("suivi_objectif")||"null"), // {depart, cible}
 };
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function saveChecked(){ localStorage.setItem("shop_checked", JSON.stringify(state.checked)); }
+function savePoids(){ localStorage.setItem("suivi_poids", JSON.stringify(state.poids)); }
+function saveObjectif(){ localStorage.setItem("suivi_objectif", JSON.stringify(state.objectif)); }
+
+function todayStr() {
+  const d = new Date();
+  return d.toLocaleDateString("fr-FR", {day:"2-digit", month:"2-digit", year:"numeric"});
+}
+function dateShort(str) {
+  // str is "dd/mm/yyyy"
+  const [d,m] = str.split("/");
+  const months = ["jan","fév","mar","avr","mai","jun","jul","aoû","sep","oct","nov","déc"];
+  return d + " " + months[parseInt(m,10)-1];
+}
 
 function buildShoppingList() {
   // Collect all ingredients from current meals
@@ -263,7 +347,8 @@ function showToast(msg){
 function render() {
   renderNav();
   if(state.tab==="plan") renderPlan();
-  else renderShop();
+  else if(state.tab==="courses") renderShop();
+  else renderSuivi();
 }
 
 function renderNav() {
@@ -279,6 +364,7 @@ function renderNav() {
 function renderPlan() {
   document.getElementById("plan-view").style.display="flex";
   document.getElementById("courses-view").style.display="none";
+  document.getElementById("suivi-view").style.display="none";
 
   const d = state.days[state.activeDay];
   const total = d.slots.reduce((a,s)=>({kcal:a.kcal+(s.meal.kcal||0),prot:a.prot+(s.meal.prot||0)}),{kcal:0,prot:0});
@@ -338,9 +424,199 @@ function renderPlan() {
   document.getElementById("day-content").innerHTML = html;
 }
 
+function renderSuivi() {
+  document.getElementById("plan-view").style.display="none";
+  document.getElementById("courses-view").style.display="none";
+  document.getElementById("suivi-view").style.display="flex";
+
+  const poids = state.poids; // [{date, kg}] sorted by date asc
+  const obj = state.objectif || {depart:"", cible:""};
+
+  // ── Stats ──
+  const last = poids.length>0 ? poids[poids.length-1].kg : null;
+  const first = poids.length>0 ? poids[0].kg : null;
+  const totalDelta = (last!==null && first!==null) ? +(last - first).toFixed(1) : null;
+  const lastDelta = poids.length>=2 ? +(poids[poids.length-1].kg - poids[poids.length-2].kg).toFixed(1) : null;
+  const cible = parseFloat(obj.cible)||null;
+  const depart = parseFloat(obj.depart)||null;
+  const restant = (cible && last) ? +(last - cible).toFixed(1) : null;
+
+  // ── Progress % ──
+  let progressPct = 0, progressLabel = "";
+  if(depart && cible && last !== null && depart !== cible) {
+    const gone = depart - last;
+    const total = depart - cible;
+    progressPct = Math.max(0, Math.min(100, Math.round((gone/total)*100)));
+    progressLabel = `${progressPct}% de l'objectif atteint`;
+  }
+
+  // ── SVG Chart ──
+  function buildChart() {
+    if(poids.length < 2) return `<div class="chart-empty">Ajoute au moins 2 pesées pour voir la courbe</div>`;
+    const vals = poids.map(p=>p.kg);
+    const minV = Math.min(...vals) - 0.5;
+    const maxV = Math.max(...vals) + 0.5;
+    const w = 300, h = 80;
+    const pts = vals.map((v,i) => {
+      const x = vals.length===1 ? w/2 : (i/(vals.length-1))*(w-20)+10;
+      const y = h - ((v-minV)/(maxV-minV))*(h-10) - 5;
+      return [x,y];
+    });
+    const path = pts.map((p,i)=>( i===0?`M${p[0]},${p[1]}`:`L${p[0]},${p[1]}`)).join(" ");
+    const areaPath = path + ` L${pts[pts.length-1][0]},${h} L${pts[0][0]},${h} Z`;
+    const dots = pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#c8e06a"/>`).join("");
+    // labels for first and last
+    const firstLabel = `<text x="${pts[0][0]}" y="${pts[0][1]-6}" text-anchor="middle" fill="rgba(200,224,106,0.6)" font-size="9">${vals[0]}kg</text>`;
+    const lastLabel  = `<text x="${pts[pts.length-1][0]}" y="${pts[pts.length-1][1]-6}" text-anchor="middle" fill="#c8e06a" font-size="9">${vals[vals.length-1]}kg</text>`;
+    return `<svg class="chart-svg" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8e06a" stop-opacity="0.25"/><stop offset="100%" stop-color="#c8e06a" stop-opacity="0"/></linearGradient></defs>
+      <path d="${areaPath}" fill="url(#cg)"/>
+      <path d="${path}" fill="none" stroke="#c8e06a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      ${dots}${firstLabel}${lastLabel}
+    </svg>`;
+  }
+
+  // ── Bilan ──
+  function buildBilan() {
+    if(poids.length === 0) return `<div class="no-history">Commence à enregistrer tes pesées pour voir ton bilan</div>`;
+    const items = [];
+    if(totalDelta!==null) {
+      const lost = -totalDelta;
+      if(lost>0) items.push({icon:"📉",title:`${lost}kg perdus depuis le début`,sub:`De ${first}kg → ${last}kg`,tag:"Super !",cls:"green"});
+      else if(lost<0) items.push({icon:"📈",title:`${Math.abs(lost)}kg pris depuis le début`,sub:`De ${first}kg → ${last}kg`,tag:"Attention",cls:"red"});
+      else items.push({icon:"⚖️",title:"Poids stable depuis le début",sub:`${last}kg`,tag:"Stable",cls:"yellow"});
+    }
+    if(lastDelta!==null) {
+      const v = -lastDelta;
+      if(v>0) items.push({icon:"✅",title:`-${v}kg depuis la dernière pesée`,sub:"Bonne progression !",tag:"Top",cls:"green"});
+      else if(v<0) items.push({icon:"⚠️",title:`+${Math.abs(v)}kg depuis la dernière pesée`,sub:"Vérifie ton alimentation",tag:"À surveiller",cls:"red"});
+      else items.push({icon:"〰️",title:"Aucun changement depuis la dernière pesée",sub:"Continue comme ça",tag:"Stable",cls:"yellow"});
+    }
+    if(restant!==null) {
+      if(restant<=0) items.push({icon:"🏆",title:"Objectif atteint !",sub:`Tu es à ${last}kg (cible: ${cible}kg)`,tag:"Bravo !",cls:"green"});
+      else items.push({icon:"🎯",title:`Encore ${restant}kg avant l'objectif`,sub:`Objectif: ${cible}kg`,tag:`${restant}kg`,cls:"yellow"});
+    }
+    if(poids.length>=7) {
+      const week = poids.slice(-7);
+      const avg = +(week.reduce((a,p)=>a+p.kg,0)/week.length).toFixed(1);
+      items.push({icon:"📊",title:`Moyenne 7 derniers jours : ${avg}kg`,sub:`Sur ${week.length} pesées`,tag:"Info",cls:"yellow"});
+    }
+    return items.map(it=>`
+      <div class="bilan-card">
+        <div class="bilan-icon">${it.icon}</div>
+        <div class="bilan-text"><div class="bilan-title">${it.title}</div><div class="bilan-sub">${it.sub}</div></div>
+        <div class="bilan-tag ${it.cls}">${it.tag}</div>
+      </div>`).join("");
+  }
+
+  // ── History rows ──
+  function buildHistory() {
+    if(poids.length===0) return `<div class="no-history">Aucune pesée enregistrée</div>`;
+    return [...poids].reverse().map((p,ri)=>{
+      const i = poids.length-1-ri;
+      const prev = i>0 ? poids[i-1].kg : null;
+      const delta = prev!==null ? +(p.kg-prev).toFixed(1) : null;
+      let deltaHtml = "";
+      if(delta!==null) {
+        const sign = delta<0?"neg":delta>0?"pos":"neu";
+        const label = delta===0?"=":delta>0?`+${delta}kg`:`${delta}kg`;
+        deltaHtml = `<span class="hist-delta ${sign}">${label}</span>`;
+      }
+      return `<div class="hist-row">
+        <span class="hist-date">${dateShort(p.date)}</span>
+        <span class="hist-weight">${p.kg} kg</span>
+        ${deltaHtml}
+        <button class="hist-del" onclick="deletePoids(${i})" title="Supprimer">✕</button>
+      </div>`;
+    }).join("");
+  }
+
+  let html = `
+    <!-- OBJECTIF -->
+    <div class="suivi-section">
+      <div class="suivi-section-title">🎯 Mon objectif</div>
+      <div class="objectif-card">
+        <div class="objectif-row">
+          <span class="objectif-label">Poids de départ</span>
+          <input class="objectif-input" id="inp-depart" type="number" step="0.1" placeholder="ex: 82" value="${obj.depart||""}" onchange="saveObjField('depart',this.value)"/>
+          <span class="objectif-unit">kg</span>
+        </div>
+        <div class="objectif-row">
+          <span class="objectif-label">Poids cible</span>
+          <input class="objectif-input" id="inp-cible" type="number" step="0.1" placeholder="ex: 75" value="${obj.cible||""}" onchange="saveObjField('cible',this.value)"/>
+          <span class="objectif-unit">kg</span>
+        </div>
+        ${depart && cible ? `
+        <div class="progress-wrap" style="padding:0;background:none;border:none;">
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${progressPct}%"></div></div>
+          <div class="progress-labels"><span>${depart}kg</span><span>${cible}kg</span></div>
+          <div class="progress-pct">${progressLabel}</div>
+        </div>` : `<div style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(232,224,208,0.25);margin-top:4px;">Remplis les deux champs pour voir ta progression</div>`}
+      </div>
+    </div>
+
+    <!-- AJOUTER PESÉE -->
+    <div class="suivi-section">
+      <div class="suivi-section-title">⚖️ Enregistrer une pesée</div>
+      <div class="pesee-form">
+        <div class="pesee-row">
+          <input class="pesee-input" id="inp-poids" type="number" step="0.1" min="30" max="300" placeholder="kg ce matin"/>
+          <button class="pesee-btn" onclick="addPoids()">Enregistrer</button>
+        </div>
+        <div class="pesee-hint">Mesure-toi le matin à jeun pour plus de précision</div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    ${poids.length>0 ? `
+    <div class="suivi-section">
+      <div class="suivi-section-title">📈 Courbe de poids</div>
+      <div class="chart-wrap">${buildChart()}</div>
+      <div class="stats-grid" style="margin-top:10px;">
+        <div class="stat-card highlight">
+          <div class="stat-val">${last}kg</div>
+          <div class="stat-lbl">Dernier poids</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val ${totalDelta!==null?(totalDelta<0?"pos":totalDelta>0?"neg":""):""}">
+            ${totalDelta!==null?(totalDelta>0?"+":"")+totalDelta+"kg":"—"}
+          </div>
+          <div class="stat-lbl">Évolution totale</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val ${lastDelta!==null?(lastDelta<0?"pos":lastDelta>0?"neg":""):""}">
+            ${lastDelta!==null?(lastDelta>0?"+":"")+lastDelta+"kg":"—"}
+          </div>
+          <div class="stat-lbl">Dernière variation</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">${poids.length}</div>
+          <div class="stat-lbl">Pesées enregistrées</div>
+        </div>
+      </div>
+    </div>` : ""}
+
+    <!-- BILAN -->
+    <div class="suivi-section">
+      <div class="suivi-section-title">✅ Bilan & résultats</div>
+      ${buildBilan()}
+    </div>
+
+    <!-- HISTORIQUE -->
+    <div class="suivi-section">
+      <div class="suivi-section-title">📋 Historique</div>
+      <div class="history-list">${buildHistory()}</div>
+      ${poids.length>0?`<button class="clear-hist-btn" onclick="clearPoids()">🗑 Effacer tout l'historique</button>`:""}
+    </div>
+  `;
+
+  document.getElementById("suivi-content").innerHTML = html;
+}
+
 function renderShop() {
   document.getElementById("plan-view").style.display="none";
   document.getElementById("courses-view").style.display="flex";
+  document.getElementById("suivi-view").style.display="none";
 
   const groups = buildShoppingList();
   const catLabels = {
@@ -392,6 +668,7 @@ function switchTab(tab) {
   state.swapping = null;
   document.getElementById("tab-plan").classList.toggle("active", tab==="plan");
   document.getElementById("tab-courses").classList.toggle("active", tab==="courses");
+  document.getElementById("tab-suivi").classList.toggle("active", tab==="suivi");
   render();
 }
 
@@ -432,6 +709,44 @@ function resetChecked() {
   saveChecked();
   showToast("🗑 Liste réinitialisée");
   renderShop();
+}
+
+function addPoids() {
+  const inp = document.getElementById("inp-poids");
+  const val = parseFloat(inp.value);
+  if(!val || val<30 || val>300) { showToast("⚠️ Poids invalide"); return; }
+  const today = todayStr();
+  // Replace if same day
+  const idx = state.poids.findIndex(p=>p.date===today);
+  if(idx>=0) { state.poids[idx].kg = val; }
+  else { state.poids.push({date:today, kg:val}); }
+  // Keep sorted
+  state.poids.sort((a,b)=>a.date.split("/").reverse().join("").localeCompare(b.date.split("/").reverse().join("")));
+  savePoids();
+  showToast("✅ Pesée enregistrée !");
+  renderSuivi();
+}
+
+function deletePoids(i) {
+  state.poids.splice(i,1);
+  savePoids();
+  renderSuivi();
+}
+
+function clearPoids() {
+  if(!confirm("Effacer tout l'historique de pesées ?")) return;
+  state.poids = [];
+  savePoids();
+  showToast("🗑 Historique effacé");
+  renderSuivi();
+}
+
+function saveObjField(field, val) {
+  if(!state.objectif) state.objectif = {depart:"",cible:""};
+  state.objectif[field] = val;
+  saveObjectif();
+  // Re-render to update progress bar
+  setTimeout(()=>renderSuivi(), 50);
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────

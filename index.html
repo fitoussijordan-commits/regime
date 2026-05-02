@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Mon Plan Nutrition</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;overflow:hidden;}
+  body{font-family:'Georgia',serif;background:linear-gradient(135deg,#0f1923 0%,#1a2d1a 60%,#0f1923 100%);color:#e8e0d0;display:flex;flex-direction:column;}
+
+  /* LAYOUT */
+  #app{display:flex;flex-direction:column;height:100vh;height:100dvh;}
+  .hdr{background:linear-gradient(180deg,#0a1208 0%,transparent 100%);padding:env(safe-area-inset-top,20px) 20px 0;padding-top:calc(env(safe-area-inset-top,0px) + 20px);text-align:center;flex-shrink:0;}
+  .hdr-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#c8e06a;}
+  .hdr-sub{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(200,224,106,0.4);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+  .tabs{display:flex;margin:12px 16px 0;border-radius:12px;overflow:hidden;border:1px solid rgba(200,224,106,0.15);flex-shrink:0;}
+  .tab-btn{flex:1;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;background:transparent;border:none;color:rgba(200,224,106,0.45);cursor:pointer;transition:all 0.2s;}
+  .tab-btn.active{background:rgba(200,224,106,0.12);color:#c8e06a;}
+
+  .scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  ::-webkit-scrollbar{width:3px;} ::-webkit-scrollbar-thumb{background:rgba(200,224,106,0.15);border-radius:3px;}
+
+  /* DAYS NAV */
+  .days-nav{display:flex;overflow-x:auto;gap:6px;padding:12px 14px;scrollbar-width:none;flex-shrink:0;}
+  .days-nav::-webkit-scrollbar{display:none;}
+  .day-btn{flex-shrink:0;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:7px 13px;cursor:pointer;transition:all 0.2s;text-align:center;}
+  .day-btn.active{background:#c8e06a;border-color:#c8e06a;}
+  .dn{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(232,224,208,0.45);text-transform:uppercase;letter-spacing:1px;}
+  .day-btn.active .dn{color:#0f1923;}
+  .dd{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#e8e0d0;}
+  .day-btn.active .dd{color:#0f1923;}
+
+  /* DAY CONTENT */
+  .day-content{padding:14px 14px 80px;max-width:520px;margin:0 auto;width:100%;}
+  .day-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .day-name-txt{font-family:'Playfair Display',serif;font-size:19px;color:#c8e06a;}
+  .day-date-txt{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(232,224,208,0.3);margin-top:2px;}
+  .day-totals{text-align:right;font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(200,224,106,0.5);}
+  .day-totals strong{display:block;font-size:15px;color:#c8e06a;font-weight:600;}
+
+  /* MEAL CARDS */
+  .meal-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:13px;margin-bottom:9px;overflow:hidden;}
+  .meal-row{display:flex;align-items:center;padding:11px 12px;gap:9px;}
+  .meal-emoji{width:32px;height:32px;background:rgba(200,224,106,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .meal-meta{flex:1;min-width:0;}
+  .meal-lbl{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(200,224,106,0.4);text-transform:uppercase;letter-spacing:1.2px;}
+  .meal-name{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#e8e0d0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .meal-right{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+  .meal-kcal{font-family:'DM Sans',sans-serif;font-size:12px;color:#c8e06a;font-weight:600;}
+  .swap-btn{background:rgba(200,224,106,0.08);border:1px solid rgba(200,224,106,0.2);border-radius:7px;padding:5px 9px;font-family:'DM Sans',sans-serif;font-size:11px;color:#c8e06a;cursor:pointer;}
+  .meal-items-list{padding:0 12px 10px 53px;border-top:1px solid rgba(255,255,255,0.05);}
+  .meal-item{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(232,224,208,0.6);padding:3px 0;display:flex;gap:5px;}
+  .meal-item::before{content:"–";color:#c8e06a;flex-shrink:0;}
+  .prot-badge{font-family:'DM Sans',sans-serif;font-size:10px;background:rgba(200,224,106,0.08);border:1px solid rgba(200,224,106,0.15);border-radius:20px;padding:2px 8px;color:rgba(200,224,106,0.6);margin-top:6px;display:inline-block;}
+
+  /* SWAP PANEL */
+  .swap-panel{background:rgba(8,15,6,0.97);border:1px solid rgba(200,224,106,0.2);border-radius:13px;margin-bottom:9px;padding:12px;}
+  .swap-title{font-family:'Playfair Display',serif;font-size:13px;color:#c8e06a;margin-bottom:9px;}
+  .alt-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:9px 11px;margin-bottom:7px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:border-color 0.15s;}
+  .alt-card:active{border-color:#c8e06a;background:rgba(200,224,106,0.06);}
+  .alt-name{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#e8e0d0;}
+  .alt-sub{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(232,224,208,0.35);margin-top:2px;}
+  .alt-kcal{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(200,224,106,0.7);font-weight:600;flex-shrink:0;margin-left:8px;}
+  .close-btn{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px;font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(232,224,208,0.4);cursor:pointer;margin-top:2px;}
+
+  /* SHOPPING */
+  .shop-content{padding:12px 14px 80px;max-width:520px;margin:0 auto;width:100%;}
+  .shop-tip{background:rgba(200,224,106,0.06);border:1px solid rgba(200,224,106,0.12);border-radius:11px;padding:11px 13px;margin-bottom:14px;font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(200,224,106,0.7);line-height:1.5;}
+  .shop-stats{display:flex;gap:8px;margin-bottom:14px;}
+  .shop-stat{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:9px;text-align:center;font-family:'DM Sans',sans-serif;}
+  .shop-stat-num{font-size:18px;font-weight:600;color:#c8e06a;}
+  .shop-stat-lbl{font-size:10px;color:rgba(232,224,208,0.4);margin-top:2px;}
+  .shop-cat{margin-bottom:16px;}
+  .shop-cat-title{font-family:'Playfair Display',serif;font-size:14px;color:#c8e06a;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid rgba(200,224,106,0.1);}
+  .shop-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;}
+  .shop-check{width:19px;height:19px;border-radius:5px;border:1px solid rgba(200,224,106,0.3);background:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all 0.15s;}
+  .shop-check.done{background:#c8e06a;border-color:#c8e06a;color:#0f1923;font-weight:700;}
+  .shop-lbl{font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(232,224,208,0.75);transition:all 0.15s;flex:1;}
+  .shop-lbl.done{color:rgba(232,224,208,0.25);text-decoration:line-through;}
+  .shop-qty{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(200,224,106,0.4);}
+  .reset-btn{width:100%;background:rgba(255,100,100,0.06);border:1px solid rgba(255,100,100,0.15);border-radius:10px;padding:10px;font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,150,150,0.6);cursor:pointer;margin-top:8px;}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#c8e06a;color:#0f1923;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:10px 22px;border-radius:22px;box-shadow:0 4px 24px rgba(0,0,0,0.5);z-index:999;pointer-events:none;opacity:0;transition:opacity 0.3s;}
+  .toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-title">Mon Plan Semaine 1</div>
+    <div class="hdr-sub">Casher · ~1 800 kcal · Repas modifiables</div>
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-plan" onclick="switchTab('plan')">📅 Mon Plan</button>
+      <button class="tab-btn" id="tab-courses" onclick="switchTab('courses')">🛒 Courses</button>
+    </div>
+  </div>
+
+  <div id="plan-view" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="days-nav" id="days-nav"></div>
+    <div class="scroll-area"><div class="day-content" id="day-content"></div></div>
+  </div>
+
+  <div id="courses-view" style="display:none;flex:1;overflow:hidden;">
+    <div class="scroll-area"><div class="shop-content" id="shop-content"></div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+
+const ALT = {
+  matin_sale:[
+    {id:"ms1",title:"Œufs brouillés + avocat",items:["2 œufs brouillés huile d'olive","2 tranches pain complet","½ avocat","Café/thé"],kcal:420,prot:22,ing:[{n:"Œufs",q:"boîte x18",c:"🥚"},{n:"Pain complet",q:"1 miche",c:"🍞"},{n:"Avocat",q:"x3",c:"🥑"}]},
+    {id:"ms2",title:"Sardines + pain de seigle",items:["2 sardines en boîte","2 tranches pain de seigle","Tomates cerises","Huile d'olive"],kcal:380,prot:24,ing:[{n:"Sardines en boîte",q:"x2 boîtes",c:"🐟"},{n:"Pain de seigle",q:"1 miche",c:"🍞"},{n:"Tomates cerises",q:"250g",c:"🥦"}]},
+    {id:"ms3",title:"Omelette 3 œufs express",items:["3 œufs","Herbes de Provence","1 tranche pain complet","Café"],kcal:360,prot:26,ing:[{n:"Œufs",q:"boîte x18",c:"🥚"},{n:"Pain complet",q:"1 miche",c:"🍞"}]},
+    {id:"ms4",title:"Saumon fumé + avocat",items:["80g saumon fumé","2 tranches pain complet","½ avocat","Câpres"],kcal:410,prot:28,ing:[{n:"Saumon fumé",q:"200g",c:"🐟"},{n:"Pain complet",q:"1 miche",c:"🍞"},{n:"Avocat",q:"x3",c:"🥑"},{n:"Câpres",q:"1 pot",c:"🫙"}]},
+  ],
+  matin_sucre:[
+    {id:"mu1",title:"Flocons d'avoine + banane",items:["60g flocons d'avoine","Lait amande 200ml","1 banane","10 amandes"],kcal:400,prot:12,ing:[{n:"Flocons d'avoine",q:"500g",c:"🌾"},{n:"Lait d'amande",q:"1L x2",c:"🥛"},{n:"Bananes",q:"x4",c:"🍌"},{n:"Amandes",q:"200g",c:"🥜"}]},
+    {id:"mu2",title:"Pain + confiture + œuf coque",items:["2 tranches pain complet","Confiture sans sucre","1 œuf à la coque","Thé"],kcal:370,prot:14,ing:[{n:"Pain complet",q:"1 miche",c:"🍞"},{n:"Confiture sans sucre",q:"1 pot",c:"🍓"},{n:"Œufs",q:"boîte x18",c:"🥚"}]},
+    {id:"mu3",title:"Pancakes avoine maison",items:["60g flocons avoine mixés","1 œuf","Lait amande","Sirop d'érable 1 cuil."],kcal:430,prot:16,ing:[{n:"Flocons d'avoine",q:"500g",c:"🌾"},{n:"Œufs",q:"boîte x18",c:"🥚"},{n:"Lait d'amande",q:"1L x2",c:"🥛"},{n:"Sirop d'érable",q:"1 flacon",c:"🍁"}]},
+  ],
+  midi_maison:[
+    {id:"mm1",title:"Poulet + quinoa + salade",items:["150g poulet grillé","80g quinoa cuit","Salade concombre/tomates","Huile d'olive"],kcal:520,prot:45,ing:[{n:"Escalopes de poulet",q:"1kg",c:"🍗"},{n:"Quinoa",q:"500g",c:"🌾"},{n:"Concombre",q:"x2",c:"🥦"},{n:"Tomates",q:"1kg",c:"🍅"}]},
+    {id:"mm2",title:"Thon + riz complet + crudités",items:["150g thon boîte à l'eau","70g riz complet cuit","Carottes râpées","Vinaigrette légère"],kcal:490,prot:42,ing:[{n:"Thon à l'eau",q:"x3 boîtes",c:"🐟"},{n:"Riz complet",q:"500g",c:"🌾"},{n:"Carottes",q:"x4",c:"🥕"}]},
+    {id:"mm3",title:"Dinde + pois chiches épicés",items:["150g escalope dinde","100g pois chiches boîte","Cumin, paprika","Salade verte"],kcal:500,prot:46,ing:[{n:"Escalopes de dinde",q:"600g",c:"🍗"},{n:"Pois chiches",q:"x2 boîtes",c:"🫘"},{n:"Salade verte",q:"x2",c:"🥬"}]},
+    {id:"mm4",title:"Bœuf haché + lentilles",items:["150g bœuf haché 5%","120g lentilles boîte","Oignon + ail","Tomate concassée"],kcal:530,prot:50,ing:[{n:"Bœuf haché 5%",q:"500g",c:"🥩"},{n:"Lentilles",q:"x2 boîtes",c:"🫘"},{n:"Oignons",q:"x3",c:"🧅"},{n:"Ail",q:"1 tête",c:"🧄"}]},
+    {id:"mm5",title:"Saumon + patate douce",items:["150g pavé saumon","1 patate douce","Citron + herbes","Haricots verts"],kcal:510,prot:40,ing:[{n:"Pavé de saumon",q:"600g",c:"🐟"},{n:"Patates douces",q:"x3",c:"🥔"},{n:"Haricots verts",q:"300g",c:"🫘"}]},
+  ],
+  midi_commande:[
+    {id:"mc1",title:"Salade poulet grillé",items:["Salade composée poulet","Légumes variés","Huile d'olive (sans sauce crémeuse)","Eau plate"],kcal:480,prot:38,ing:[]},
+    {id:"mc2",title:"Wrap poulet sans sauce fromagère",items:["Wrap poulet grillé","Légumes crus","Pas de mayo","Eau plate"],kcal:500,prot:36,ing:[]},
+    {id:"mc3",title:"Sushis / poisson grillé",items:["10-12 pièces sushi (poisson, concombre)","Éviter california rolls frits","Soupe miso si dispo","Eau"],kcal:460,prot:32,ing:[]},
+    {id:"mc4",title:"Bowl riz + protéine",items:["Bowl riz + poulet ou thon","Légumes grillés","Pas de sauce sucrée","Eau plate"],kcal:510,prot:40,ing:[]},
+  ],
+  soir:[
+    {id:"so1",title:"Saumon four + légumes rôtis",items:["150g saumon au four","Courgette + poivron rôtis","Herbes + citron","1 patate douce"],kcal:480,prot:38,ing:[{n:"Pavé de saumon",q:"600g",c:"🐟"},{n:"Courgettes",q:"x3",c:"🥦"},{n:"Poivrons",q:"x2",c:"🫑"},{n:"Patates douces",q:"x3",c:"🥔"}]},
+    {id:"so2",title:"Steak bœuf + lentilles",items:["150g steak bœuf","120g lentilles cuites","Épinards sautés ail","Moutarde"],kcal:520,prot:48,ing:[{n:"Steak de bœuf",q:"600g",c:"🥩"},{n:"Lentilles",q:"x2 boîtes",c:"🫘"},{n:"Épinards",q:"200g",c:"🥬"},{n:"Moutarde",q:"1 pot",c:"🫙"}]},
+    {id:"so3",title:"Poulet papillote express",items:["150g filet poulet","Courgette + tomates","Citron + thym","Sel, poivre"],kcal:420,prot:40,ing:[{n:"Filets de poulet",q:"600g",c:"🍗"},{n:"Courgettes",q:"x3",c:"🥦"},{n:"Tomates",q:"1kg",c:"🍅"}]},
+    {id:"so4",title:"Cabillaud + quinoa + haricots",items:["180g cabillaud poêlé","80g quinoa","Haricots verts vapeur","Citron + persil"],kcal:460,prot:44,ing:[{n:"Cabillaud",q:"600g",c:"🐟"},{n:"Quinoa",q:"500g",c:"🌾"},{n:"Haricots verts",q:"300g",c:"🫘"}]},
+    {id:"so5",title:"Agneau + taboulé maison",items:["150g côte agneau grillée","Semoule + persil + tomates","Salade roquette","Huile d'olive"],kcal:550,prot:42,ing:[{n:"Côte d'agneau",q:"600g",c:"🥩"},{n:"Semoule",q:"200g",c:"🌾"},{n:"Persil",q:"1 bouquet",c:"🌿"},{n:"Roquette",q:"100g",c:"🥬"}]},
+    {id:"so6",title:"Soupe légumes + œufs durs",items:["Grand bol soupe légumes maison","2 œufs durs","1 tranche pain de seigle"],kcal:360,prot:18,ing:[{n:"Poireaux",q:"x2",c:"🧅"},{n:"Courgettes",q:"x3",c:"🥦"},{n:"Œufs",q:"boîte x18",c:"🥚"},{n:"Pain de seigle",q:"1 miche",c:"🍞"}]},
+    {id:"so7",title:"Dinde + haricots blancs + épinards",items:["150g escalope dinde","100g haricots blancs boîte","Épinards sautés","Ail + huile d'olive"],kcal:460,prot:44,ing:[{n:"Escalopes de dinde",q:"600g",c:"🍗"},{n:"Haricots blancs",q:"x1 boîte",c:"🫘"},{n:"Épinards",q:"200g",c:"🥬"}]},
+  ],
+  snack:[
+    {id:"sn1",title:"Amandes + fruit",items:["20g amandes","1 pomme ou poire"],kcal:180,prot:5,ing:[{n:"Amandes",q:"200g",c:"🥜"},{n:"Pommes",q:"x5",c:"🍎"}]},
+    {id:"sn2",title:"Houmous + légumes",items:["3 cuil. houmous","Carottes + céleri bâtonnets"],kcal:150,prot:6,ing:[{n:"Houmous",q:"200g",c:"🫙"},{n:"Carottes",q:"x4",c:"🥕"},{n:"Céleri",q:"1 branche",c:"🥦"}]},
+    {id:"sn3",title:"Galettes de riz + purée amande",items:["2 galettes de riz","1 cuil. purée d'amande"],kcal:160,prot:4,ing:[{n:"Galettes de riz",q:"1 paquet",c:"🌾"},{n:"Purée d'amande",q:"1 pot",c:"🥜"}]},
+    {id:"sn4",title:"Noix de cajou + fruit",items:["30g noix de cajou","1 fruit de saison"],kcal:200,prot:5,ing:[{n:"Noix de cajou",q:"100g",c:"🥜"},{n:"Fruits variés",q:"saison",c:"🍎"}]},
+    {id:"sn5",title:"Smoothie rapide",items:["1 banane","200ml lait amande","1 cuil. beurre amande"],kcal:190,prot:5,ing:[{n:"Bananes",q:"x4",c:"🍌"},{n:"Lait d'amande",q:"1L x2",c:"🥛"},{n:"Beurre d'amande",q:"1 pot",c:"🥜"}]},
+  ],
+};
+
+const DAYS_INIT = [
+  {day:"Lundi",date:"5 mai",slots:[
+    {key:"matin",label:"Matin",emoji:"🌅",type:"matin_sale",meal:ALT.matin_sale[0]},
+    {key:"midi",label:"Midi",emoji:"☀️",type:"midi_maison",meal:ALT.midi_maison[0]},
+    {key:"snack",label:"Collation",emoji:"🍎",type:"snack",meal:ALT.snack[0]},
+    {key:"soir",label:"Soir",emoji:"🌙",type:"soir",meal:ALT.soir[0]},
+  ]},
+  {day:"Mardi",date:"6 mai",slots:[
+    {key:"matin",label:"Matin",emoji:"🌅",type:"matin_sucre",meal:ALT.matin_sucre[0]},
+    {key:"midi",label:"Midi",emoji:"☀️",type:"midi_commande",meal:ALT.midi_commande[0]},
+    {key:"snack",label:"Collation",emoji:"🍎",type:"snack",meal:ALT.snack[1]},
+    {key:"soir",label:"Soir",emoji:"🌙",type:"soir",meal:ALT.soir[1]},
+  ]},
+  {day:"Mercredi",date:"7 mai",slots:[
+    {key:"matin",label:"Matin",emoji:"🌅",type:"matin_sale",meal:ALT.matin_sale[2]},
+    {key:"midi",label:"Midi",emoji:"☀️",type:"midi_maison",meal:ALT.midi_maison[1]},
+    {key:"snack",label:"Collation",emoji:"🍎",type:"snack",meal:ALT.snack[2]},
+    {key:"soir",label:"Soir",emoji:"🌙",type:"soir",meal:ALT.soir[2]},
+  ]},
+  {day:"Jeudi",date:"8 mai",slots:[
+    {key:"matin",label:"Matin",emoji:"🌅",type:"matin_sucre",meal:ALT.matin_sucre[1]},
+    {key:"midi",label:"Midi",emoji:"☀️",type:"midi_commande",meal:ALT.midi_commande[1]},
+    {key:"snack",label:"Collation",emoji:"🍎",type:"snack",meal:ALT.snack[3]},
+    {key:"soir",label:"Soir",emoji:"🌙",type:"soir",meal:ALT.soir[3]},
+  ]},
+  {day:"Vendredi",date:"9 mai",slots:[
+    {key:"matin",label:"Matin",emoji:"🌅",type:"matin_sale",meal:ALT.matin_sale[3]},
+    {key:"midi",label:"Midi",emoji:"☀️",type:"midi_maison",meal:ALT.midi_maison[2]},
+    {key:"snack",label:"Collation",emoji:"🍎",type:"snack",meal:ALT.snack[4]},
+    {key:"soir",label:"Soir",emoji:"🌙",type:"soir",meal:ALT.soir[4]},
+  ]},
+  {day:"Samedi",date:"10 mai",slots:[
+    {key:"matin",label:"Matin",emoji:"🌅",type:"matin_sale",meal:ALT.matin_sale[0]},
+    {key:"midi",label:"Midi",emoji:"☀️",type:"midi_commande",meal:{id:"libre",title:"Repas libre (intelligent)",items:["Viande ou poisson grillé","Légumes de saison","Évite fritures & sauces lourdes","1 verre de vin si souhaité"],kcal:600,prot:35,ing:[]}},
+    {key:"snack",label:"Collation",emoji:"🍎",type:"snack",meal:ALT.snack[0]},
+    {key:"soir",label:"Soir",emoji:"🌙",type:"soir",meal:ALT.soir[5]},
+  ]},
+  {day:"Dimanche",date:"11 mai",slots:[
+    {key:"matin",label:"Matin",emoji:"🌅",type:"matin_sucre",meal:ALT.matin_sucre[2]},
+    {key:"midi",label:"Midi",emoji:"☀️",type:"midi_maison",meal:ALT.midi_maison[0]},
+    {key:"snack",label:"Collation",emoji:"🍎",type:"snack",meal:ALT.snack[1]},
+    {key:"soir",label:"Soir",emoji:"🌙",type:"soir",meal:ALT.soir[5]},
+  ]},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let state = {
+  tab: "plan",
+  activeDay: 0,
+  days: JSON.parse(JSON.stringify(DAYS_INIT)),
+  swapping: null, // {dayIdx, slotIdx}
+  checked: JSON.parse(localStorage.getItem("shop_checked")||"{}"),
+};
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function saveChecked(){ localStorage.setItem("shop_checked", JSON.stringify(state.checked)); }
+
+function buildShoppingList() {
+  // Collect all ingredients from current meals
+  const map = {}; // key -> {n, q, c, count}
+  state.days.forEach(d => d.slots.forEach(s => {
+    (s.meal.ing||[]).forEach(ing => {
+      const key = ing.c + ing.n;
+      if(!map[key]) map[key] = {...ing, count:0};
+      map[key].count++;
+    });
+  }));
+
+  // Also add base staples
+  const staples = [
+    {c:"🫒",n:"Huile d'olive vierge extra",q:"1 bouteille"},
+    {c:"🧂",n:"Sel & poivre",q:"selon stock"},
+    {c:"🌿",n:"Herbes de Provence",q:"1 flacon"},
+    {c:"🌶️",n:"Cumin + paprika",q:"1 flacon chacun"},
+    {c:"🍋",n:"Citrons",q:"x4"},
+    {c:"💧",n:"Eau plate (2L/jour)",q:"pack"},
+  ];
+  staples.forEach(s => {
+    const key = s.c+s.n;
+    if(!map[key]) map[key] = {...s, count:1};
+  });
+
+  // Group by emoji category
+  const catOrder = ["🐟","🍗","🥩","🥚","🌾","🫘","🥦","🥬","🍅","🥕","🧅","🧄","🫑","🥑","🍎","🍌","🥛","🥜","🫙","🍞","🥔","🌿","🫒","🧂","🌶️","🍋","🍁","🍓","💧","🌾"];
+  const groups = {};
+  Object.values(map).forEach(item => {
+    if(!groups[item.c]) groups[item.c]=[];
+    groups[item.c].push(item);
+  });
+  return groups;
+}
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 2000);
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  renderNav();
+  if(state.tab==="plan") renderPlan();
+  else renderShop();
+}
+
+function renderNav() {
+  const nav = document.getElementById("days-nav");
+  nav.innerHTML = state.days.map((d,i) => `
+    <button class="day-btn${state.activeDay===i?" active":""}" onclick="setDay(${i})">
+      <div class="dn">${d.day.substring(0,3)}</div>
+      <div class="dd">${d.date.split(" ")[0]}</div>
+    </button>
+  `).join("");
+}
+
+function renderPlan() {
+  document.getElementById("plan-view").style.display="flex";
+  document.getElementById("courses-view").style.display="none";
+
+  const d = state.days[state.activeDay];
+  const total = d.slots.reduce((a,s)=>({kcal:a.kcal+(s.meal.kcal||0),prot:a.prot+(s.meal.prot||0)}),{kcal:0,prot:0});
+
+  let html = `
+    <div class="day-hdr">
+      <div>
+        <div class="day-name-txt">${d.day}</div>
+        <div class="day-date-txt">${d.date}</div>
+      </div>
+      <div class="day-totals">
+        <strong>${total.kcal} kcal</strong>
+        <div>${total.prot}g protéines</div>
+      </div>
+    </div>
+  `;
+
+  d.slots.forEach((slot,si) => {
+    const isSwapping = state.swapping && state.swapping.dayIdx===state.activeDay && state.swapping.slotIdx===si;
+    const alts = (ALT[slot.type]||[]).filter(a=>a.id!==slot.meal.id);
+
+    html += `<div class="meal-card">
+      <div class="meal-row">
+        <div class="meal-emoji">${slot.emoji}</div>
+        <div class="meal-meta">
+          <div class="meal-lbl">${slot.label}</div>
+          <div class="meal-name">${slot.meal.title}</div>
+        </div>
+        <div class="meal-right">
+          <div class="meal-kcal">${slot.meal.kcal} kcal</div>
+          ${alts.length>0?`<button class="swap-btn" onclick="toggleSwap(${state.activeDay},${si})">${isSwapping?"✕":"↺"}</button>`:""}
+        </div>
+      </div>
+      <div class="meal-items-list">
+        ${slot.meal.items.map(item=>`<div class="meal-item">${item}</div>`).join("")}
+        <div class="prot-badge">💪 ${slot.meal.prot}g protéines</div>
+      </div>
+    </div>`;
+
+    if(isSwapping) {
+      html += `<div class="swap-panel">
+        <div class="swap-title">Choisir une alternative :</div>
+        ${alts.map(alt=>`
+          <div class="alt-card" onclick="swapMeal(${state.activeDay},${si},'${alt.id}','${slot.type}')">
+            <div>
+              <div class="alt-name">${alt.title}</div>
+              <div class="alt-sub">${alt.items.slice(0,2).join(" · ")}${alt.items.length>2?" …":""}</div>
+            </div>
+            <div class="alt-kcal">${alt.kcal} kcal</div>
+          </div>
+        `).join("")}
+        <button class="close-btn" onclick="toggleSwap(null,null)">Annuler</button>
+      </div>`;
+    }
+  });
+
+  document.getElementById("day-content").innerHTML = html;
+}
+
+function renderShop() {
+  document.getElementById("plan-view").style.display="none";
+  document.getElementById("courses-view").style.display="flex";
+
+  const groups = buildShoppingList();
+  const catLabels = {
+    "🐟":"🐟 Poissons","🍗":"🍗 Volailles","🥩":"🥩 Viandes rouges","🥚":"🥚 Œufs",
+    "🌾":"🌾 Féculents & Céréales","🫘":"🫘 Légumineuses","🥦":"🥦 Légumes","🥬":"🥬 Verdures",
+    "🍅":"🍅 Tomates","🥕":"🥕 Carottes","🧅":"🧅 Oignons & Ail","🧄":"🧄 Ail","🫑":"🫑 Poivrons",
+    "🥑":"🥑 Avocats","🍎":"🍎 Fruits","🍌":"🍌 Bananes","🥛":"🥛 Laits végétaux",
+    "🥜":"🥜 Fruits secs & Oléagineux","🫙":"🫙 Conserves & Épicerie","🍞":"🍞 Pains",
+    "🥔":"🥔 Patates","🌿":"🌿 Herbes","🫒":"🫒 Huiles & Condiments","🧂":"🧂 Assaisonnement",
+    "🌶️":"🌶️ Épices","🍋":"🍋 Citrons","🍁":"🍁 Sirops","🍓":"🍓 Confitures","💧":"💧 Boissons",
+  };
+
+  const allItems = Object.values(groups).flat();
+  const totalItems = allItems.length;
+  const doneItems = allItems.filter(item => state.checked[item.c+item.n]).length;
+
+  let html = `
+    <div class="shop-tip">🔄 Liste mise à jour selon tes repas actuels. Si tu changes un repas dans le plan, reviens ici — la liste s'adapte !</div>
+    <div class="shop-stats">
+      <div class="shop-stat"><div class="shop-stat-num">${totalItems}</div><div class="shop-stat-lbl">articles</div></div>
+      <div class="shop-stat"><div class="shop-stat-num">${doneItems}</div><div class="shop-stat-lbl">cochés</div></div>
+      <div class="shop-stat"><div class="shop-stat-num">${totalItems-doneItems}</div><div class="shop-stat-lbl">restants</div></div>
+    </div>
+  `;
+
+  Object.entries(groups).forEach(([cat, items]) => {
+    const label = catLabels[cat] || cat;
+    html += `<div class="shop-cat"><div class="shop-cat-title">${label}</div>`;
+    items.forEach(item => {
+      const key = item.c+item.n;
+      const done = !!state.checked[key];
+      html += `
+        <div class="shop-item" onclick="toggleCheck('${key}')">
+          <div class="shop-check${done?" done":""}">${done?"✓":""}</div>
+          <div class="shop-lbl${done?" done":""}">${item.n}</div>
+          <div class="shop-qty">${item.q}</div>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+
+  html += `<button class="reset-btn" onclick="resetChecked()">🗑 Tout décocher</button>`;
+  document.getElementById("shop-content").innerHTML = html;
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  state.tab = tab;
+  state.swapping = null;
+  document.getElementById("tab-plan").classList.toggle("active", tab==="plan");
+  document.getElementById("tab-courses").classList.toggle("active", tab==="courses");
+  render();
+}
+
+function setDay(i) {
+  state.activeDay = i;
+  state.swapping = null;
+  renderNav();
+  renderPlan();
+}
+
+function toggleSwap(dayIdx, slotIdx) {
+  if(dayIdx===null) { state.swapping = null; }
+  else if(state.swapping && state.swapping.dayIdx===dayIdx && state.swapping.slotIdx===slotIdx) {
+    state.swapping = null;
+  } else {
+    state.swapping = {dayIdx, slotIdx};
+  }
+  renderPlan();
+}
+
+function swapMeal(dayIdx, slotIdx, altId, type) {
+  const alt = (ALT[type]||[]).find(a=>a.id===altId);
+  if(!alt) return;
+  state.days[dayIdx].slots[slotIdx].meal = alt;
+  state.swapping = null;
+  showToast("✅ Repas remplacé !");
+  renderPlan();
+}
+
+function toggleCheck(key) {
+  state.checked[key] = !state.checked[key];
+  saveChecked();
+  renderShop();
+}
+
+function resetChecked() {
+  state.checked = {};
+  saveChecked();
+  showToast("🗑 Liste réinitialisée");
+  renderShop();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
